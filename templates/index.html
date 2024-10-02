@@ -1,26 +1,120 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Texto para Fala</title>
+    <title>Conversor de Texto em Voz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        textarea, input[type="file"], button {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        audio {
+            margin-top: 20px;
+            display: block;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
-    <h1>Texto para Fala</h1>
+    <h1>Conversor de Texto em Voz</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="texto">Digite o texto para converter em áudio:</label><br>
+        <textarea name="texto" placeholder="Digite seu texto aqui..." rows="4" cols="50"></textarea><br><br>
 
-    <form method="POST">
-        <textarea name="texto" id="texto" rows="4" cols="50" placeholder="Digite o texto aqui"></textarea>
-        <br>
-        <button type="submit">Gerar Áudio</button>
+        <label for="microfone">Ou usar o microfone:</label>
+        <label class="switch">
+            <input type="checkbox" id="microfone" name="microfone">
+            <span class="slider round"></span>
+        </label><br><br>
+
+        <label>
+            <input type="radio" name="idioma" value="pt" checked> Português
+        </label>
+        <label>
+            <input type="radio" name="idioma" value="en"> Inglês
+        </label><br><br>
+        <button type="submit">Converter</button>
     </form>
 
-    <!-- Se houver um arquivo de áudio, mostrar o player -->
     {% if audio_path %}
-        <h2>Seu áudio:</h2>
+        <h2>Resultado:</h2>
         <audio controls>
             <source src="{{ audio_path }}" type="audio/mpeg">
             Seu navegador não suporta o elemento de áudio.
         </audio>
+        <p>Texto reconhecido: {{ texto }}</p>
     {% endif %}
 </body>
 </html>
